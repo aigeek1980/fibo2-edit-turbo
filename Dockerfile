@@ -2,10 +2,17 @@ FROM runpod/worker-comfyui:5.8.4-base
 
 ARG HF_TOKEN=""
 
-# Install curl (needed by start.sh hot-patch) and websocket-client
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
+# Install curl (needed by start.sh hot-patch) and git
+RUN apt-get update && apt-get install -y --no-install-recommends curl git \
     && rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache-dir websocket-client
+
+# Replace ComfyUI with latest version — the 5.8.4-base ships an older build
+# that is missing TextEncodeFibo2 and other 2025 core nodes.
+# comfy-cli (used below for model download) is a separate package and is unaffected.
+RUN rm -rf /comfyui \
+    && git clone --depth 1 https://github.com/comfyanonymous/ComfyUI.git /comfyui \
+    && pip install -r /comfyui/requirements.txt --quiet
 
 # ── Models ────────────────────────────────────────────────────
 # Total ~24 GB — downloaded once during docker build, baked into the image.
