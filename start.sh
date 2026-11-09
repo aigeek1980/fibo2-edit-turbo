@@ -3,8 +3,7 @@ set -e
 
 # ── Hot-patch: pull latest handler & workflow from GitHub on every boot ──────
 # This means rp_handler.py and api-workflow.json changes never need a rebuild.
-# Replace YOUR_GITHUB_USERNAME/YOUR_REPO_NAME with your actual repo path.
-GITHUB_RAW="https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/main"
+GITHUB_RAW="https://raw.githubusercontent.com/aigeek1980/fibo2-edit-turbo/main"
 
 echo "Fetching latest handler from GitHub..."
 curl -sf -o /rp_handler.py "${GITHUB_RAW}/rp_handler.py" \
