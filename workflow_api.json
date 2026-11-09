@@ -1,0 +1,82 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "fibo2_edit_turbo_bf16.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_4b_bf16.safetensors",
+      "type": "fibo2",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "flux2-vae.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "TextEncodeFibo2",
+    "inputs": {
+      "clip": ["2", 0],
+      "images.image_1": ["39", 0],
+      "images.image_2": ["40", 0],
+      "images.image_3": ["39", 0],
+      "vae": ["3", 0],
+      "prompt": "",
+      "negative_prompt": "",
+      "width": 0,
+      "height": 0,
+      "batch_size": 1
+    }
+  },
+  "5": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["1", 0],
+      "positive": ["4", 0],
+      "negative": ["4", 1],
+      "latent_image": ["4", 2],
+      "seed": 0,
+      "control_after_generate": "fixed",
+      "steps": 4,
+      "cfg": 1,
+      "sampler_name": "dpmpp_sde_gpu",
+      "scheduler": "simple",
+      "denoise": 1
+    }
+  },
+  "6": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": ["5", 0],
+      "vae": ["3", 0]
+    }
+  },
+  "38": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": ["6", 0],
+      "filename_prefix": "ComfyUI"
+    }
+  },
+  "39": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "input_1.png",
+      "upload": "image"
+    }
+  },
+  "40": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "input_2.png",
+      "upload": "image"
+    }
+  }
+}
