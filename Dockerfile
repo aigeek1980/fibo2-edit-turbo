@@ -2,9 +2,6 @@ FROM runpod/worker-comfyui:5.8.4-base
 
 ARG HF_TOKEN=""
 
-# Update ComfyUI to 0.44+ (required for TextEncodeFibo2 and UNETLoader nodes)
-RUN cd /comfyui && git pull && pip install -r requirements.txt --quiet
-
 # Install websocket-client for the handler
 RUN pip install --no-cache-dir websocket-client
 
