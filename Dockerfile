@@ -2,7 +2,9 @@ FROM runpod/worker-comfyui:5.8.4-base
 
 ARG HF_TOKEN=""
 
-# Install websocket-client for the handler
+# Install curl (needed by start.sh hot-patch) and websocket-client
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache-dir websocket-client
 
 # ── Models ────────────────────────────────────────────────────
